@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Анонимная поддержка | Поделись проблемой</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: inherit;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 12px;
+            display: none;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .info {
+            background: #e7f3ff;
+            color: #004085;
+            border: 1px solid #b8daff;
+            margin-top: 20px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .char-counter {
+            text-align: right;
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #999;
+            font-size: 12px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌙 Анонимная поддержка</h1>
+        <div class="subtitle">Поделитесь тем, что вас беспокоит — это останется анонимно</div>
+        
+        <form id="messageForm">
+            <div class="form-group">
+                <label for="problem">Ваша проблема или трудность:</label>
+                <textarea id="problem" name="problem" rows="6" maxlength="2000" placeholder="Опишите, что вас беспокоит..."></textarea>
+                <div class="char-counter">
+                    <span id="charCount">0</span>/2000 символов
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="nickname">Псевдоним (необязательно):</label>
+                <input type="text" id="nickname" name="nickname" maxlength="50" placeholder="Оставьте пустым для полной анонимности">
+            </div>
+            
+            <button type="submit">Отправить анонимно</button>
+        </form>
+        
+        <div id="statusMessage" class="message"></div>
+        <div class="info">
+            💡 Ваше сообщение будет отправлено полностью анонимно. Никакие личные данные не сохраняются.
+        </div>
+        <footer>
+            📞 Если вы в кризисной ситуации: 8-800-2000-122 (бесплатно, круглосуточно)
+        </footer>
+    </div>
+
+    <script>
+        const form = document.getElementById('messageForm');
+        const problemTextarea = document.getElementById('problem');
+        const charCountSpan = document.getElementById('charCount');
+        const statusMessage = document.getElementById('statusMessage');
+
+        // Счетчик символов
+        problemTextarea.addEventListener('input', function() {
+            const count = this.value.length;
+            charCountSpan.textContent = count;
+            if (count > 1900) {
+                charCountSpan.style.color = '#ff9800';
+            } else {
+                charCountSpan.style.color = '#999';
+            }
+        });
+
+        // Функция для показа сообщения
+        function showMessage(text, type) {
+            statusMessage.textContent = text;
+            statusMessage.className = `message ${type}`;
+            statusMessage.style.display = 'block';
+            
+            setTimeout(() => {
+                statusMessage.style.display = 'none';
+            }, 5000);
+        }
+
+        // Отправка формы на Formspree
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const problem = problemTextarea.value.trim();
+            const nickname = document.getElementById('nickname').value.trim();
+            
+            if (!problem) {
+                showMessage('Пожалуйста, напишите вашу проблему', 'error');
+                return;
+            }
+            
+            if (problem.length < 10) {
+                showMessage('Пожалуйста, опишите проблему подробнее (минимум 10 символов)', 'error');
+                return;
+            }
+            
+            // Отключаем кнопку на время отправки
+            const submitButton = form.querySelector('button');
+            const originalText = submitButton.textContent;
+            submitButton.textContent = 'Отправка...';
+            submitButton.disabled = true;
+            
+            try {
+                // Создаем данные для отправки
+                const formData = new FormData();
+                formData.append('problem', problem);
+                formData.append('nickname', nickname || 'Аноним');
+                
+                // 🔽 ЗАМЕНИТЕ ЭТУ ССЫЛКУ НА ВАШУ ИЗ FORMSPREE 🔽
+                // Пример: https://formspree.io/f/xkjdqwer
+                const response = await fetch('https://formspree.io/f/xdapwrgg', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    showMessage('✅ Ваше сообщение отправлено. Спасибо, что поделились!', 'success');
+                    form.reset(); // Очищаем форму
+                    charCountSpan.textContent = '0'; // Сбрасываем счетчик
+                } else {
+                    const errorData = await response.json();
+                    console.error('Ошибка Formspree:', errorData);
+                    throw new Error('Ошибка отправки');
+                }
+                
+            } catch (error) {
+                console.error('Ошибка:', error);
+                showMessage('❌ Не удалось отправить сообщение. Пожалуйста, попробуйте позже.', 'error');
+            } finally {
+                submitButton.textContent = originalText;
+                submitButton.disabled = false;
+            }
+        });
+        
+        // Инициализация счетчика
+        charCountSpan.textContent = '0';
+    </script>
+</body>
+</html>
