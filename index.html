@@ -226,7 +226,7 @@
         const charCountSpan = document.getElementById('charCount');
         const statusMessage = document.getElementById('statusMessage');
 
-        // Счетчик символов
+     
         problemTextarea.addEventListener('input', function() {
             const count = this.value.length;
             charCountSpan.textContent = count;
@@ -237,7 +237,7 @@
             }
         });
 
-        // Функция для показа сообщения
+      
         function showMessage(text, type) {
             statusMessage.textContent = text;
             statusMessage.className = `message ${type}`;
@@ -248,7 +248,7 @@
             }, 5000);
         }
 
-        // Отправка формы на Formspree
+        
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             
@@ -265,20 +265,20 @@
                 return;
             }
             
-            // Отключаем кнопку на время отправки
+           
             const submitButton = form.querySelector('button');
             const originalText = submitButton.textContent;
             submitButton.textContent = 'Отправка...';
             submitButton.disabled = true;
             
             try {
-                // Создаем данные для отправки
+              
                 const formData = new FormData();
                 formData.append('problem', problem);
                 formData.append('nickname', nickname || 'Аноним');
                 
-                // 🔽 ЗАМЕНИТЕ ЭТУ ССЫЛКУ НА ВАШУ ИЗ FORMSPREE 🔽
-                // Пример: https://formspree.io/f/xkjdqwer
+                
+            
                 const response = await fetch('https://formspree.io/f/xdapwrgg', {
                     method: 'POST',
                     body: formData,
@@ -306,7 +306,7 @@
             }
         });
         
-        // Инициализация счетчика
+       
         charCountSpan.textContent = '0';
     </script>
 </body>
